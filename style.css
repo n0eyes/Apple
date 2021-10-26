@@ -48,3 +48,51 @@ a {
   margin-left: 2em;
   font-size: 0.8rem;
 }
+/*  */
+.scroll-section {
+  position: relative;
+  padding-top: 50vh;
+}
+#scroll-section-0 h1 {
+  position: relative;
+  top: -10vh;
+  z-index: 5;
+  font-size: 4rem;
+  text-align: center;
+}
+.main-message {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  top: 35vh;
+  margin: 5px 0;
+  height: 3em;
+  font-size: 2.5rem;
+  opacity: 0;
+}
+.main-message p {
+  font-weight: bold;
+  text-align: center;
+  line-height: 1.2;
+}
+.main-message small {
+  display: block;
+  margin-bottom: 0.5em;
+  font-size: 1.2rem;
+}
+#scroll-section-2 .main-message {
+  font-size: 3.5rem;
+}
+.description {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 1rem;
+  font-size: 1.2rem;
+  color: #888;
+}
+.description strong {
+  float: left;
+  margin-right: 0.2em;
+  font-size: 3rem;
+  color: rgb(29, 29, 31);
+}
