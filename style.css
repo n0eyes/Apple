@@ -58,6 +58,7 @@ a {
 .scroll-section {
   position: relative;
   padding-top: 50vh;
+  border: 2px solid red;
 }
 #scroll-section-0 h1 {
   position: relative;
@@ -74,7 +75,7 @@ a {
   margin: 5px 0;
   height: 3em;
   font-size: 2.5rem;
-  /* opacity: 0; */
+  opacity: 0;
 }
 .main-message p {
   font-weight: bold;
@@ -140,7 +141,6 @@ footer {
 .sticky-elem {
   display: none;
   position: fixed;
-  top: 0;
   left: 0;
   width: 100%;
 }
