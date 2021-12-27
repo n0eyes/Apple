@@ -22,6 +22,7 @@ a {
   width: 100%;
   height: 44px;
   padding: 0 1rem;
+  z-index: 10;
 }
 .local-nav {
   position: absolute;
@@ -33,6 +34,7 @@ a {
   height: 52px;
   padding: 0 1rem;
   border-bottom: 1px solid #ddd;
+  z-index: 11;
 }
 .global-nav-links,
 .local-nav-links {
@@ -130,6 +132,17 @@ a {
 }
 .mid-message strong {
   color: rgb(29, 29, 31);
+}
+.sticky-elem-canvas {
+  /* position이 fixed이기 때문 */
+  top: 0;
+  /* 스크립트로 레이아웃을 재수정 하기  전의 부모 높이를 따른다*/
+  height: 100%;
+}
+.sticky-elem-canvas canvas {
+  position: absolute;
+  top: 50%;
+  left: 50%;
 }
 .canvas-caption {
   max-width: 1000px;

@@ -18,8 +18,14 @@
         messageB: document.querySelector("#scroll-section-0 .main-message.b"),
         messageC: document.querySelector("#scroll-section-0 .main-message.c"),
         messageD: document.querySelector("#scroll-section-0 .main-message.d"),
+        canvas: document.querySelector("#video-canvas-0"),
+        context: document.querySelector("#video-canvas-0").getContext("2d"),
+        videoImages: [],
       },
       values: {
+        videoImageCount: 300,
+        imageSequence: [0, 299],
+        canvas_opacity_out: [1, 0, { start: 0.9, end: 1 }],
         messageA_opacity_in: [0, 1, { start: 0.1, end: 0.2 }],
         messageB_opacity_in: [0, 1, { start: 0.3, end: 0.4 }],
         messageC_opacity_in: [0, 1, { start: 0.5, end: 0.6 }],
@@ -60,8 +66,13 @@
         messageC: document.querySelector("#scroll-section-2 .c"),
         pinB: document.querySelector("#scroll-section-2 .b .pin"),
         pinC: document.querySelector("#scroll-section-2 .c .pin"),
+        canvas: document.querySelector("#video-canvas-1"),
+        context: document.querySelector("#video-canvas-1").getContext("2d"),
+        videoImages: [],
       },
       values: {
+        videoImageCount: 950,
+        imageSequence: [0, 949],
         messageA_translateY_in: [20, 0, { start: 0.15, end: 0.2 }],
         messageB_translateY_in: [30, 0, { start: 0.5, end: 0.55 }],
         messageC_translateY_in: [30, 0, { start: 0.72, end: 0.77 }],
@@ -95,7 +106,25 @@
     },
   ];
 
+  function setCanvasImages() {
+    let imgElem;
+    for (let i = 0; i < sceneInfo[0].values.videoImageCount; i++) {
+      imgElem = new Image();
+      imgElem.src = `./video/001/IMG_${6726 + i}.JPG`;
+      sceneInfo[0].objs.videoImages.push(imgElem);
+    }
+    for (let i = 0; i < sceneInfo[2].values.videoImageCount; i++) {
+      imgElem = new Image();
+      imgElem.src = `./video/002/IMG_${7027 + i}.JPG`;
+      sceneInfo[2].objs.videoImages.push(imgElem);
+    }
+  }
+  setCanvasImages();
   function setLayout() {
+    const ratio = window.innerHeight / 1080;
+    sceneInfo[0].objs.canvas.style.transform = `translate3d(-50%,-50%,0) scale(${ratio})`;
+    sceneInfo[2].objs.canvas.style.transform = `translate3d(-50%,-50%,0) scale(${ratio})`;
+
     //각 스크롤 섹션의 높이 셋팅
     for (let i = 0; i < sceneInfo.length; i++) {
       if (sceneInfo[i].type === "sticky") {
@@ -107,7 +136,6 @@
         i
       ].objs.container.style.height = `${sceneInfo[i].scrollHeight}px`;
     }
-
     //새로 고침시 활성 씬 찾아가기
     yOffset = window.pageYOffset;
     let totalScrollHeight = 0;
@@ -178,6 +206,8 @@
 
     switch (currentScene) {
       case 0:
+        let sequence = Math.round(calcValues(values.imageSequence, scrollInfo));
+        objs.context.drawImage(objs.videoImages[sequence], 0, 0);
         if (scrollRatio <= 0.22) {
           // in
           objs.messageA.style.opacity = calcValues(
@@ -265,11 +295,19 @@
             scrollInfo
           )}%, 0)`;
         }
-
+        if (scrollRatio >= 0.9) {
+          objs.canvas.style.opacity = calcValues(
+            values.canvas_opacity_out,
+            scrollInfo
+          );
+        }
         break;
 
       case 2:
-        // console.log('2 play');
+        let sequence2 = Math.round(
+          calcValues(values.imageSequence, scrollInfo)
+        );
+        objs.context.drawImage(objs.videoImages[sequence2], 0, 0);
         if (scrollRatio <= 0.25) {
           // in
           objs.messageA.style.opacity = calcValues(
@@ -369,7 +407,7 @@
     for (let i = 0; i < currentScene; i++) {
       prevScrollHeight += sceneInfo[i].scrollHeight;
     }
-    console.log(sceneInfo[1].scrollHeight);
+
     if (yOffset > prevScrollHeight + sceneInfo[currentScene].scrollHeight) {
       enterNewScene = true;
       currentScene++;
@@ -383,7 +421,11 @@
     }
     !enterNewScene && playAnimation();
   }
-  window.addEventListener("load", setLayout);
+  window.addEventListener("load", () => {
+    //첫 이미지 렌더링
+    sceneInfo[0].objs.context.drawImage(sceneInfo[0].objs.videoImages[0], 0, 0);
+    setLayout();
+  });
   window.addEventListener("resize", setLayout);
   window.addEventListener("scroll", () => {
     yOffset = window.pageYOffset;
