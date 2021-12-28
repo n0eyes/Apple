@@ -73,6 +73,8 @@
       values: {
         videoImageCount: 950,
         imageSequence: [0, 949],
+        canvas_opacity_in: [0, 1, { start: 0, end: 0.1 }],
+        canvas_opacity_out: [1, 0, { start: 0.9, end: 1 }],
         messageA_translateY_in: [20, 0, { start: 0.15, end: 0.2 }],
         messageB_translateY_in: [30, 0, { start: 0.5, end: 0.55 }],
         messageC_translateY_in: [30, 0, { start: 0.72, end: 0.77 }],
@@ -120,6 +122,7 @@
     }
   }
   setCanvasImages();
+
   function setLayout() {
     const ratio = window.innerHeight / 1080;
     sceneInfo[0].objs.canvas.style.transform = `translate3d(-50%,-50%,0) scale(${ratio})`;
@@ -308,6 +311,21 @@
           calcValues(values.imageSequence, scrollInfo)
         );
         objs.context.drawImage(objs.videoImages[sequence2], 0, 0);
+        ////fade-in / out
+        if (scrollRatio < 0.5) {
+          objs.canvas.style.opacity = calcValues(
+            values.canvas_opacity_in,
+            scrollInfo
+          );
+          console.log(calcValues(values.canvas_opacity_in, scrollInfo));
+        }
+        if (scrollRatio >= 0.5) {
+          objs.canvas.style.opacity = calcValues(
+            values.canvas_opacity_out,
+            scrollInfo
+          );
+        }
+        /////////////////
         if (scrollRatio <= 0.25) {
           // in
           objs.messageA.style.opacity = calcValues(
@@ -393,7 +411,6 @@
         break;
 
       case 3: {
-        console.log(currentScene);
         break;
       }
       default:
